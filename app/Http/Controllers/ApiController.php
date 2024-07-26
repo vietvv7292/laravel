@@ -35,7 +35,7 @@ class ApiController extends Controller
         }])
         
         ->orderBy('id', 'desc');
-        $result =  $query->paginate(2);
+        $result =  $query->paginate(20);
         return response()->json(['message' => 'success', 'data' => $result]);
     }
 
