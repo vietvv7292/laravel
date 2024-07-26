@@ -120,4 +120,29 @@ class ApiController extends Controller
         }
         return response()->json(['message' => 'success']);
     }
+
+    public function detail($id)
+    { 
+        // get data product by id
+        $data = Product::with(['category' => function ($query) {
+                $query->select('id', 'name');
+        }])
+        ->with(['address' => function ($query) {
+            $query->select('id', 'name');
+        }])
+        ->with(['models' => function ($query) {
+            $query->select('id', 'name');
+        }])
+        ->with(['producer' => function ($query) {
+            $query->select('id', 'name');
+        }])
+        ->with(['status' => function ($query) {
+            $query->select('id', 'name');
+        }])
+        ->with(['user' => function ($query) {
+            $query->select('id', 'username');
+        }])->where('id', $id)->first();
+        return response()->json(['message' => 'success', 'data' => $data]);
+
+    }
 }
