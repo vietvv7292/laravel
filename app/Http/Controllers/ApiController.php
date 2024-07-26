@@ -39,11 +39,6 @@ class ApiController extends Controller
         return response()->json(['message' => 'success', 'data' => $result]);
     }
 
-    public function update(Request $request, $id)
-    {
-        return response()->json(['message' => 'API update method', 'id' => $id, 'data' => $request->all()]);
-    }
-
     public function option_list()
     {
         $data = [
@@ -142,7 +137,33 @@ class ApiController extends Controller
         ->with(['user' => function ($query) {
             $query->select('id', 'username');
         }])->where('id', $id)->first();
+        // decode des to array
+        $data->des = json_decode($data->des, true);
         return response()->json(['message' => 'success', 'data' => $data]);
 
+    }
+
+    public function update($id)
+    {  
+        // update qr code by id if type = qr_code
+        if (request('type') == 'qrcode') {
+            $data = Product::where('id', $id)->update(['qr_code' => request('value')]);
+        }
+        // update status by id if type = status_id
+        if (request('type') == 'status') {
+            $data = Product::where('id', $id)->update(['status_id' => request('value')]);
+        }
+        // update des by id if type = des
+        if (request('type') == 'des') {
+            // get des in database table product by id
+            $des = Product::where('id', $id)->first()->des; 
+            // encode des to json
+            $des = json_decode($des, true);
+            // add new des to array
+            $des[] = [request('key') => request('value')];
+            // update des in database table product by id
+            $data = Product::where('id', $id)->update(['des' => json_encode($des)]);
+        }
+        return response()->json(['message' => 'success']);
     }
 }
