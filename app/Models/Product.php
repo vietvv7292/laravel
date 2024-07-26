@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $table = 't_products';
+    public $timestamps = false;
 
     public function category()
     {

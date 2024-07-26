@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/product/list', [ApiController::class, 'list']);
-Route::get('/items/{id}', [ApiController::class, 'show']);
-Route::post('/items', [ApiController::class, 'store']);
-Route::put('/items/{id}', [ApiController::class, 'update']);
-Route::delete('/items/{id}', [ApiController::class, 'destroy']);
+Route::post('/product/update/{id}', [ApiController::class, 'update']);
+Route::post('/option/list', [ApiController::class, 'option_list']);
+Route::post('/option/add', [ApiController::class, 'option_add']);
+Route::post('/option/edit/{id}', [ApiController::class, 'option_edit']);
